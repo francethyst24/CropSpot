@@ -1,4 +1,4 @@
-package com.example.cropspot.ui.theme
+package com.example.cropspot.presentation.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

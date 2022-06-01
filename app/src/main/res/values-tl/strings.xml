@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CropSpot</string>
+    <string name="ui_text_test_localization">Nabucodonosor</string>
+</resources>

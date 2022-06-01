@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CropSpot</string>
+    <string name="ui_text_test_localization">Nebuchadnezzar</string>
 </resources>

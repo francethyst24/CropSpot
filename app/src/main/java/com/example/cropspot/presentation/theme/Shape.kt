@@ -1,4 +1,4 @@
-package com.example.cropspot.ui.theme
+package com.example.cropspot.presentation.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
