@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    // new
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -63,5 +66,23 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
     // endregion
-    
+
+    // DaggerHilt
+    implementation("com.google.dagger:hilt-android:$hilt_version")
+    kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
+    // DaggerHilt-Navigation
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    // Navigation
+    implementation("androidx.navigation:navigation-compose:$nav_version")
+    // region // Room
+    implementation("androidx.room:room-runtime:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    testImplementation("androidx.room:room-testing:$room_version")
+    // endregion
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }
