@@ -22,9 +22,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             CropSpotTheme {
-                val navController = rememberNavController()
+                val navHostController = rememberNavController()
                 val coroutineScope = rememberCoroutineScope()
-                MainScreen(navController, coroutineScope)
+                MainScreen(navHostController, coroutineScope)
             }
         }
     }
