@@ -1,11 +1,22 @@
 package com.example.cropspot.data
 
+import android.util.Log
 import com.example.cropspot.data.dao.CropDao
+import com.example.cropspot.domain.dto.CropItem
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.transform
 import javax.inject.Inject
 
 class CropRepository @Inject constructor(
-    cropDao: CropDao,
-    language: String,
+    private val cropDao: CropDao,
 ) {
-    val loadAllCropItems = cropDao.loadAllCropItemViews(language)
+    fun getGroupedCropItems(language: String): Flow<Map<Boolean, List<CropItem>>> {
+        return cropDao.getCropItems(language).transform { value ->
+            val grouped = value.groupBy { it.isSupported }
+            emit(grouped)
+        }
+    }
+
+    fun getCropProfile(id: String, language: String) = cropDao.getCropProfileById(id, language)
+
 }

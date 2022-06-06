@@ -2,4 +2,9 @@
 <resources>
     <string name="app_name">CropSpot</string>
     <string name="ui_text_test_localization">Nabucodonosor</string>
+    <string name="ui_text_history">Talaan</string>
+    <string name="ui_text_diseases">Mga Sakit</string>
+    <string name="ui_text_guest">Guest</string>
+    <string name="ui_text_settings">Settings</string>
+    <string name="ui_text_diagnose">Diagnose</string>
 </resources>

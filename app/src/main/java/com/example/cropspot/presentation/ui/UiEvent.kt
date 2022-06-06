@@ -7,4 +7,8 @@ sealed class UiEvent {
         val message: String,
         val action: String? = null,
     ) : UiEvent()
+
+    data class UpdateLocale(
+        val language: String,
+    ) : UiEvent()
 }

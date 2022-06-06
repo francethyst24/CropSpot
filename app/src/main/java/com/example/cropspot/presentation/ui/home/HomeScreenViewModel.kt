@@ -1,21 +1,34 @@
-package com.example.cropspot.presentation.ui.home.crop_list
+package com.example.cropspot.presentation.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cropspot.data.CropRepository
 import com.example.cropspot.presentation.ui.Destination
 import com.example.cropspot.presentation.ui.UiEvent
+import com.example.cropspot.presentation.ui.home.crop_list.CropListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CropListViewModel @Inject constructor(
-    cropRepository: CropRepository,
+class HomeScreenViewModel @Inject constructor(
+    private val repository: CropRepository,
+    val language: Flow<String>,
 ) : ViewModel() {
-    val cropItems = cropRepository.loadAllCropItems
+
+    private val _screenState = MutableStateFlow<CropListState>(CropListState.LOADING)
+    val screenState: StateFlow<CropListState> = _screenState
+
+    fun loadLocalizedCropList() {
+        viewModelScope.launch {
+            language.collect {
+                val groupedList = repository.getGroupedCropItems(it)
+                _screenState.emit(CropListState.SUCCESS(groupedList))
+            }
+        }
+    }
 
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
@@ -25,7 +38,7 @@ class CropListViewModel @Inject constructor(
             is CropListEvent.OnCropClick -> {
                 val generalEvent = UiEvent.Navigate(
                     buildString {
-                        append(Destination.Crop.route)
+                        append(Destination.CROP.route)
                         append("?cropId=")
                         append(specialEvent.crop.id)
                     }

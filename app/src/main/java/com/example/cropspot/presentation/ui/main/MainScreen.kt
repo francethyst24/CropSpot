@@ -2,22 +2,32 @@
 
 package com.example.cropspot.presentation.ui.main
 
+import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import com.example.cropspot.R
-import com.example.cropspot.presentation.ui.Destination
-import com.example.cropspot.presentation.ui.crop.CropScreen
-import com.example.cropspot.presentation.ui.home.HomeScreen
+import com.example.cropspot.presentation.theme.Ochre100
+import com.example.cropspot.presentation.ui.Navigation
+import com.example.cropspot.presentation.ui.UiEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -25,82 +35,108 @@ import kotlinx.coroutines.launch
 fun MainScreen(
     navController: NavHostController,
     coroutineScope: CoroutineScope,
-) {
-    val bottomSheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden
-    )
+    showNavDrawer: () -> Unit,
+    updateLocale: (UiEvent.UpdateLocale) -> Unit,
+    mainModel: MainScreenViewModel = hiltViewModel(),
+) { // Persist Sheet -------------------------------------------------------------------------------
+    val sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    // Persist AppBar Title ------------------------------------------------------------------------
+    val appBarState = mainModel.appBar.collectAsState().value
+    // Sheet ---------------------------------------------------------------------------------------
     ModalBottomSheetLayout(
-        sheetState = bottomSheetState,
+        sheetState = sheetState,
         sheetContent = { MainSheetList() },
-    ) {
+    ) { // Persisting Screen -----------------------------------------------------------------------
+        val scaffoldState = rememberScaffoldState()
         Scaffold(
-            topBar = { MainTopAppBar() },
-            floatingActionButton = {
-                MainFloatingActionButton {
-                    coroutineScope.launch { bottomSheetState.show() }
-                }
-            },
-        ) {
-            NavHost(
-                navController = navController,
-                startDestination = Destination.Home.route
-            ) {
-                composable(Destination.Home.route) {
-                    HomeScreen(onNavigate = {
-                        navController.navigate(it.route)
-                    })
-                }
-                composable(
-                    route = buildString {
-                        append(Destination.Crop.route)
-                        append("?cropId={cropId}")
+            scaffoldState = scaffoldState,
+            topBar = {
+                MainAppBar(
+                    title = appBarState.title,
+                    canPopBackStack = appBarState.canPopBackStack,
+                    onNavIconClick = { canPopBackStack ->
+                        if (canPopBackStack) navController.navigateUp()
+                        else showNavDrawer()
                     },
-                    arguments = listOf(
-                        navArgument(name = "cropId") {
-                            type = NavType.StringType
-                            nullable = false
-                        },
-                    ),
-                ) { entry ->
-                    CropScreen(
-                        cropId = entry.arguments?.getString("cropId") ?: "",
-                        onPopBackStack = { navController.popBackStack() },
-                    )
-                }
-            }
+                    updateLocale = { updateLocale(UiEvent.UpdateLocale(it)) }
+                )
+            },
+            floatingActionButton = {
+                MainFAB(onClick = { coroutineScope.launch { sheetState.show() } })
+            },
+        ) { // Content Screen ----------------------------------------------------------------------
+            Navigation(
+                navController = navController
+            )
+            // -------------------------------------------------------------------------------------
         }
     }
 }
 
 @Composable
-fun MainTopAppBar() {
+fun MainAppBar(
+    title: String,
+    canPopBackStack: Boolean,
+    onNavIconClick: ((canPopBackStack: Boolean) -> Unit),
+    updateLocale: (String) -> Unit,
+) {
+    Log.d("AppDebug", "MainAppBar: Composition=[$title, $canPopBackStack]")
     TopAppBar(
-        title = {
-            Text(stringResource(id = R.string.app_name))
+        title = { Text(title) },
+        navigationIcon = {
+            if (canPopBackStack) MainIconButton(
+                onClick = { onNavIconClick(true) },
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = "Back"
+            ) else MainIconButton(
+                onClick = { onNavIconClick(false) },
+                imageVector = Icons.Filled.Menu,
+                contentDescription = "Show Drawer"
+            )
         },
         actions = {
-            IconButton(onClick = {/*TODO*/ }) {
-                Icon(
-                    imageVector = Icons.Filled.Search,
-                    contentDescription = "Search",
-                )
-            }
-            IconButton(onClick = {/*TODO*/ }) {
-                Icon(
-                    imageVector = Icons.Filled.Settings,
-                    contentDescription = "Settings",
-                )
-            }
+            MainIconButton(
+                onClick = { updateLocale("en") },
+                imageVector = Icons.Filled.Search,
+                contentDescription = "Search"
+            )
+            MainIconButton(
+                onClick = { updateLocale("tl") },
+                imageVector = Icons.Filled.Settings,
+                contentDescription = "Settings"
+            )
         },
     )
 }
 
 @Composable
-fun MainFloatingActionButton(onFabClick: () -> Unit) {
-    FloatingActionButton(onClick = { onFabClick() }) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_image_search),
-            contentDescription = "Diagnose"
-        )
+fun MainFAB(onClick: () -> Unit) {
+    FloatingActionButton(
+        backgroundColor = Ochre100,
+        onClick = { onClick() }
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            val text = stringResource(id = R.string.ui_text_diagnose)
+            Icon(
+                painter = painterResource(id = R.drawable.ic_image_search),
+                contentDescription = text
+            )
+            Text(text = text, fontWeight = FontWeight.Bold)
+        }
+    }
+}
+
+@Composable
+fun MainIconButton(
+    imageVector: ImageVector,
+    contentDescription: String,
+    onClick: () -> Unit,
+) {
+    IconButton(onClick = { onClick() }) {
+        Icon(imageVector, contentDescription)
     }
 }
