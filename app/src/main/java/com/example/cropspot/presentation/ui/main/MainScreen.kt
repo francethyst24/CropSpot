@@ -2,7 +2,6 @@
 
 package com.example.cropspot.presentation.ui.main
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -18,7 +17,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -27,7 +25,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.cropspot.R
 import com.example.cropspot.domain.dto.AppBarState
-import com.example.cropspot.presentation.theme.Ochre100
 import com.example.cropspot.presentation.ui.Navigation
 import com.example.cropspot.presentation.ui.UiEvent
 import kotlinx.coroutines.CoroutineScope

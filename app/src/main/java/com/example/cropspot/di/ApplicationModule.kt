@@ -6,7 +6,6 @@ import com.example.cropspot.common.utils.LocaleUtils
 import com.example.cropspot.data.AppDatabase
 import com.example.cropspot.data.CropRepository
 import com.example.cropspot.data.CropRepositoryImpl
-import com.example.cropspot.data.dao.CropDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,6 +25,7 @@ object ApplicationModule {
         return Room
             .databaseBuilder(context, AppDatabase::class.java, DB_NAME)
             .createFromAsset("$DB_NAME.db")
+            .fallbackToDestructiveMigration()
             .build()
     }
 

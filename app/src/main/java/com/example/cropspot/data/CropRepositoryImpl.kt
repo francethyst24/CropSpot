@@ -2,14 +2,13 @@ package com.example.cropspot.data
 
 import com.example.cropspot.data.dao.CropDao
 import com.example.cropspot.data.view.CropItem
-import com.example.cropspot.data.view.CropProfile
+import com.example.cropspot.domain.dto.CropProfileWithDiseases
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
-import javax.inject.Inject
 
 class CropRepositoryImpl constructor(
     private val cropDao: CropDao,
-): CropRepository {
+) : CropRepository {
     override fun getCropItems(language: String): Flow<Map<Boolean, List<CropItem>>> {
         return cropDao.getCropItems(language).transform { value ->
             val grouped = value.groupBy { it.isSupported }
@@ -17,7 +16,7 @@ class CropRepositoryImpl constructor(
         }
     }
 
-    override fun getCropProfile(id: String, language: String): Flow<CropProfile> {
+    override fun getCropProfile(id: String, language: String): Flow<CropProfileWithDiseases> {
         return cropDao.getCropProfileById(id, language)
     }
 
