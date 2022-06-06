@@ -9,15 +9,11 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CropDao {
-    @Query("SELECT crop.id, cropInfo.name, crop.isSupported FROM crop" +
-            " INNER JOIN cropInfo ON cropInfo.cropId = crop.id" +
-            " WHERE cropInfo.language = :language" +
-            " ORDER BY crop.isSupported DESC, cropInfo.name")
+    @Query("SELECT * FROM cropItem WHERE language = :language" +
+            " ORDER BY isSupported DESC, name")
     fun getCropItems(language: String): Flow<List<CropItem>>
 
-    @Query("SELECT cropInfo.name, crop.scientificName, crop.isSupported, cropInfo.description" +
-            " FROM crop INNER JOIN cropInfo ON cropInfo.cropId = crop.id" +
-            " WHERE crop.id = :id AND cropInfo.language = :language")
+    @Query("SELECT * FROM cropProfile WHERE id = :id AND language = :language")
     fun getCropProfileById(id: String, language: String): Flow<CropProfile>
 
 }
