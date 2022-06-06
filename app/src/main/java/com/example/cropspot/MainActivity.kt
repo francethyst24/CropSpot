@@ -18,6 +18,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -109,21 +110,21 @@ fun MainDrawerContent(navController: NavHostController, onNavigate: () -> Unit) 
             Image(
                 modifier = Modifier.size(45.dp),
                 imageVector = Icons.Filled.AccountCircle,
-                contentDescription = "Drawer Icon"
+                contentDescription = "Drawer Icon",
+                colorFilter = ColorFilter.tint(MaterialTheme.colors.primary),
             )
             Text(
                 text = stringResource(id = R.string.ui_text_guest),
                 style = MaterialTheme.typography.h6
             )
         }
-        Divider(modifier = Modifier
-            .fillMaxWidth()
-        )
+        Divider(modifier = Modifier.fillMaxWidth())
+
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
         drawerItems.forEach { item ->
             DrawerItem(item,
-                isSelected = currentRoute == item.destination.route,
+                isSelected = currentRoute == item.route,
                 onItemClick = {
                     navController.navigate(item.route) {
                         navController.graph.startDestinationRoute?.let {
@@ -148,6 +149,9 @@ fun DrawerItem(
     val bgColor = if (isSelected) {
         MaterialTheme.colors.primary
     } else Color.Transparent
+    val contentColor = if (isSelected) {
+        MaterialTheme.colors.onPrimary
+    } else MaterialTheme.colors.onSurface
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -161,13 +165,18 @@ fun DrawerItem(
         when (val iconNotNull = item.iconRes ?: item.iconVec!!) {
             is Int -> Icon(
                 painter = painterResource(id = iconNotNull),
-                contentDescription = item.destination.route
+                contentDescription = item.destination.route,
+                tint = contentColor,
             )
             is ImageVector -> Icon(
                 imageVector = iconNotNull,
-                contentDescription = item.destination.route
+                contentDescription = item.destination.route,
+                tint = contentColor,
             )
         }
-        Text(text = stringResource(item.titleRes))
+        Text(
+            text = stringResource(item.titleRes),
+            color = contentColor,
+        )
     }
 }

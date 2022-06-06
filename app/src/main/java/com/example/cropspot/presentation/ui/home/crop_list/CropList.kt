@@ -50,12 +50,12 @@ fun CropListHeader(label: String) {
         modifier = Modifier
             .fillMaxWidth()
             .shadow(elevation = 1.dp)
-            .background(Ochre100)
+            .background(MaterialTheme.colors.secondary)
             .padding(start = 24.dp)
             .padding(vertical = 6.dp),
         text = label,
         fontWeight = FontWeight.Bold,
-        color = MaterialTheme.colors.onSurface,
+        color = MaterialTheme.colors.onSecondary,
         style = MaterialTheme.typography.subtitle2,
     )
 }
@@ -70,7 +70,6 @@ fun CropListItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp)
-            .background(Lime200)
             .height(60.dp),
         onClick = { onCardClick() }
     ) {

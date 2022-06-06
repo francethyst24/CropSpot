@@ -3,6 +3,7 @@ package com.example.cropspot.presentation.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cropspot.data.CropRepository
+import com.example.cropspot.data.CropRepositoryImpl
 import com.example.cropspot.presentation.ui.Destination
 import com.example.cropspot.presentation.ui.UiEvent
 import com.example.cropspot.presentation.ui.home.crop_list.CropListState
@@ -24,7 +25,7 @@ class HomeScreenViewModel @Inject constructor(
     fun loadLocalizedCropList() {
         viewModelScope.launch {
             language.collect {
-                val groupedList = repository.getGroupedCropItems(it)
+                val groupedList = repository.getCropItems(it)
                 _screenState.emit(CropListState.SUCCESS(groupedList))
             }
         }

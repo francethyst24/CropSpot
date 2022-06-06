@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import com.example.cropspot.common.utils.LocaleUtils
 import com.example.cropspot.data.AppDatabase
+import com.example.cropspot.data.CropRepository
+import com.example.cropspot.data.CropRepositoryImpl
 import com.example.cropspot.data.dao.CropDao
 import dagger.Module
 import dagger.Provides
@@ -18,8 +20,8 @@ import javax.inject.Singleton
 object ApplicationModule {
     private const val DB_NAME = "cropspot"
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
         return Room
             .databaseBuilder(context, AppDatabase::class.java, DB_NAME)
@@ -27,14 +29,14 @@ object ApplicationModule {
             .build()
     }
 
-    @Singleton
     @Provides
-    fun provideCropDao(db: AppDatabase): CropDao {
-        return db.cropDao()
+    @Singleton
+    fun provideCropRepository(db: AppDatabase): CropRepository {
+        return CropRepositoryImpl(cropDao = db.cropDao())
     }
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideLanguageFlow(@ApplicationContext context: Context): Flow<String> {
         return LocaleUtils.getLanguageFlow(context)
     }

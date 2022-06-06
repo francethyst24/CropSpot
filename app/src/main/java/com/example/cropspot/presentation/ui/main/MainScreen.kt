@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.cropspot.R
+import com.example.cropspot.domain.dto.AppBarState
 import com.example.cropspot.presentation.theme.Ochre100
 import com.example.cropspot.presentation.ui.Navigation
 import com.example.cropspot.presentation.ui.UiEvent
@@ -41,7 +43,7 @@ fun MainScreen(
 ) { // Persist Sheet -------------------------------------------------------------------------------
     val sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     // Persist AppBar Title ------------------------------------------------------------------------
-    val appBarState = mainModel.appBar.collectAsState().value
+    val appBarState by mainModel.appBar.collectAsState()
     // Sheet ---------------------------------------------------------------------------------------
     ModalBottomSheetLayout(
         sheetState = sheetState,
@@ -52,8 +54,7 @@ fun MainScreen(
             scaffoldState = scaffoldState,
             topBar = {
                 MainAppBar(
-                    title = appBarState.title,
-                    canPopBackStack = appBarState.canPopBackStack,
+                    appBarState = appBarState,
                     onNavIconClick = { canPopBackStack ->
                         if (canPopBackStack) navController.navigateUp()
                         else showNavDrawer()
@@ -65,9 +66,7 @@ fun MainScreen(
                 MainFAB(onClick = { coroutineScope.launch { sheetState.show() } })
             },
         ) { // Content Screen ----------------------------------------------------------------------
-            Navigation(
-                navController = navController
-            )
+            Navigation(navController = navController)
             // -------------------------------------------------------------------------------------
         }
     }
@@ -75,16 +74,14 @@ fun MainScreen(
 
 @Composable
 fun MainAppBar(
-    title: String,
-    canPopBackStack: Boolean,
+    appBarState: AppBarState,
     onNavIconClick: ((canPopBackStack: Boolean) -> Unit),
     updateLocale: (String) -> Unit,
 ) {
-    Log.d("AppDebug", "MainAppBar: Composition=[$title, $canPopBackStack]")
     TopAppBar(
-        title = { Text(title) },
+        title = { Text(appBarState.title) },
         navigationIcon = {
-            if (canPopBackStack) MainIconButton(
+            if (appBarState.canPopBackStack) MainIconButton(
                 onClick = { onNavIconClick(true) },
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = "Back"
@@ -112,7 +109,8 @@ fun MainAppBar(
 @Composable
 fun MainFAB(onClick: () -> Unit) {
     FloatingActionButton(
-        backgroundColor = Ochre100,
+        backgroundColor = MaterialTheme.colors.secondary,
+        contentColor = MaterialTheme.colors.onSecondary,
         onClick = { onClick() }
     ) {
         Row(
