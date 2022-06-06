@@ -5,7 +5,6 @@ import androidx.room.Room
 import com.example.cropspot.common.utils.LocaleUtils
 import com.example.cropspot.data.AppDatabase
 import com.example.cropspot.data.dao.CropDao
-import com.example.cropspot.data.dao.CropInfoDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,12 +31,6 @@ object ApplicationModule {
     @Provides
     fun provideCropDao(db: AppDatabase): CropDao {
         return db.cropDao()
-    }
-
-    @Singleton
-    @Provides
-    fun provideCropInfoDao(db: AppDatabase): CropInfoDao {
-        return db.cropInfoDao()
     }
 
     @Singleton

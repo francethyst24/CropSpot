@@ -15,7 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.cropspot.R
-import com.example.cropspot.domain.dto.CropItem
+import com.example.cropspot.data.view.CropItem
 import com.example.cropspot.presentation.theme.Lime200
 import com.example.cropspot.presentation.theme.Ochre100
 

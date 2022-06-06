@@ -1,4 +1,4 @@
-package com.example.cropspot.domain.dto
+package com.example.cropspot.data.view
 
 data class CropProfile(
     val name: String,

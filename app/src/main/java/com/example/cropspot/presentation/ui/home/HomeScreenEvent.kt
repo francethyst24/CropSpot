@@ -1,6 +1,6 @@
 package com.example.cropspot.presentation.ui.home
 
-import com.example.cropspot.domain.dto.CropItem
+import com.example.cropspot.data.view.CropItem
 
 sealed interface HomeScreenEvent
 

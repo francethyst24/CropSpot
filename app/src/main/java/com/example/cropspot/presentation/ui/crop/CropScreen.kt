@@ -1,6 +1,5 @@
 package com.example.cropspot.presentation.ui.crop
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -17,10 +16,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.cropspot.MainActivityViewModel
 import com.example.cropspot.R
-import com.example.cropspot.domain.dto.CropProfile
-import com.example.cropspot.presentation.ui.main.MainScreenViewModel
+import com.example.cropspot.data.view.CropProfile
 
 
 @Suppress("UnnecessaryVariable")

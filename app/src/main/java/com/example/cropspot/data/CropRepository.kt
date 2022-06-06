@@ -1,8 +1,7 @@
 package com.example.cropspot.data
 
-import android.util.Log
 import com.example.cropspot.data.dao.CropDao
-import com.example.cropspot.domain.dto.CropItem
+import com.example.cropspot.data.view.CropItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 import javax.inject.Inject

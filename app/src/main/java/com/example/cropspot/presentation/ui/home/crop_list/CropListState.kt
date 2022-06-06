@@ -1,6 +1,6 @@
 package com.example.cropspot.presentation.ui.home.crop_list
 
-import com.example.cropspot.domain.dto.CropItem
+import com.example.cropspot.data.view.CropItem
 import kotlinx.coroutines.flow.Flow
 
 sealed class CropListState {
