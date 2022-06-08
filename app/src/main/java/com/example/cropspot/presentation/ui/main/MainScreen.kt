@@ -6,17 +6,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,9 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.cropspot.R
-import com.example.cropspot.domain.dto.AppBarState
 import com.example.cropspot.presentation.ui.Navigation
 import com.example.cropspot.presentation.ui.UiEvent
+import com.example.cropspot.presentation.ui.main.persistent.MainAppBar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -70,40 +64,6 @@ fun MainScreen(
 }
 
 @Composable
-fun MainAppBar(
-    appBarState: AppBarState,
-    onNavIconClick: ((canPopBackStack: Boolean) -> Unit),
-    updateLocale: (String) -> Unit,
-) {
-    TopAppBar(
-        title = { Text(appBarState.title) },
-        navigationIcon = {
-            if (appBarState.canPopBackStack) MainIconButton(
-                onClick = { onNavIconClick(true) },
-                imageVector = Icons.Filled.ArrowBack,
-                contentDescription = "Back"
-            ) else MainIconButton(
-                onClick = { onNavIconClick(false) },
-                imageVector = Icons.Filled.Menu,
-                contentDescription = "Show Drawer"
-            )
-        },
-        actions = {
-            MainIconButton(
-                onClick = { updateLocale("en") },
-                imageVector = Icons.Filled.Search,
-                contentDescription = "Search"
-            )
-            MainIconButton(
-                onClick = { updateLocale("tl") },
-                imageVector = Icons.Filled.Settings,
-                contentDescription = "Settings"
-            )
-        },
-    )
-}
-
-@Composable
 fun MainFAB(onClick: () -> Unit) {
     FloatingActionButton(
         backgroundColor = MaterialTheme.colors.secondary,
@@ -125,13 +85,3 @@ fun MainFAB(onClick: () -> Unit) {
     }
 }
 
-@Composable
-fun MainIconButton(
-    imageVector: ImageVector,
-    contentDescription: String,
-    onClick: () -> Unit,
-) {
-    IconButton(onClick = { onClick() }) {
-        Icon(imageVector, contentDescription)
-    }
-}

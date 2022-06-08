@@ -20,8 +20,12 @@ enum class Destination(
         route = "history",
         canPopBackStack = false
     ),
-    DISEASES(
-        route = "diseases",
+    DISEASE(
+        route = "disease",
+        canPopBackStack = true,
+    ),
+    DISEASE_LIST(
+        route = "disease-list",
         canPopBackStack = false
     ),
     SETTINGS(

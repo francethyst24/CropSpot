@@ -1,4 +1,4 @@
-package com.example.cropspot.domain.dto
+package com.example.cropspot.data.view
 
 import androidx.room.Embedded
 import androidx.room.Relation
@@ -7,8 +7,6 @@ import com.example.cropspot.data.view.CropProfile
 
 data class CropProfileWithDiseases(
     @Embedded val profile: CropProfile,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "cropId",
-    ) val diseases: List<CropDisease>,
+    @Relation(parentColumn = "id", entityColumn = "cropId")
+    val diseases: List<CropDisease>,
 )

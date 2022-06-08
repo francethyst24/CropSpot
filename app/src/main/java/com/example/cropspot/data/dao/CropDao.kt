@@ -2,8 +2,9 @@ package com.example.cropspot.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import com.example.cropspot.data.view.CropItem
-import com.example.cropspot.domain.dto.CropProfileWithDiseases
+import com.example.cropspot.data.view.CropProfileWithDiseases
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -12,9 +13,7 @@ interface CropDao {
             " ORDER BY isSupported DESC, name")
     fun getCropItems(language: String): Flow<List<CropItem>>
 
-    /*@Query("SELECT * FROM cropProfile WHERE id = :id AND language = :language")
-    fun getCropProfileById(id: String, language: String): Flow<CropProfile>*/
-
+    @Transaction
     @Query("SELECT * FROM cropProfile WHERE id = :id AND language = :language")
-    fun getCropProfileById(id: String, language: String): Flow<CropProfileWithDiseases>
+    fun getCropProfile(id: String, language: String): Flow<CropProfileWithDiseases>
 }

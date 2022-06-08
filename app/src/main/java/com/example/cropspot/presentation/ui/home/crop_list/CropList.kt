@@ -16,8 +16,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.cropspot.R
 import com.example.cropspot.data.view.CropItem
-import com.example.cropspot.presentation.theme.Lime200
-import com.example.cropspot.presentation.theme.Ochre100
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -31,21 +29,25 @@ fun CropList(
         state = lazyListState,
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        groupedItems.forEach { (isSupported, crops) ->
+        groupedItems.forEach { (isSupported, items) ->
             stickyHeader {
-                CropListHeader(
+                ListStickyHeader(
                     label = if (isSupported) "Supported" else "Others"
                 )
             }
-            items(items = crops) {
-                CropListItem(crop = it, onCardClick = { onItemClick(it) })
+            items(items = items) {
+                ListItem(
+                    text = it.name,
+                    isSupported = it.isSupported,
+                    onCardClick = { onItemClick(it) }
+                )
             }
         }
     }
 }
 
 @Composable
-fun CropListHeader(label: String) {
+fun ListStickyHeader(label: String) {
     Text(
         modifier = Modifier
             .fillMaxWidth()
@@ -62,10 +64,7 @@ fun CropListHeader(label: String) {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CropListItem(
-    crop: CropItem,
-    onCardClick: () -> Unit,
-) {
+fun ListItem(text: String, isSupported: Boolean, onCardClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -78,12 +77,12 @@ fun CropListItem(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(6.dp),
         ) {
-            Text(crop.name)
-            if (!crop.isSupported) return@Row
+            Text(text)
+            if (!isSupported) return@Row
             Icon(
                 painter = painterResource(id = R.drawable.ic_verified),
                 contentDescription = "Supported",
-                tint = MaterialTheme.colors.secondary
+                tint = MaterialTheme.colors.primary
             )
         }
     }

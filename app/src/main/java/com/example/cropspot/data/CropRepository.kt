@@ -1,7 +1,7 @@
 package com.example.cropspot.data
 
 import com.example.cropspot.data.view.CropItem
-import com.example.cropspot.domain.dto.CropProfileWithDiseases
+import com.example.cropspot.data.view.CropProfileWithDiseases
 import kotlinx.coroutines.flow.Flow
 
 interface CropRepository {

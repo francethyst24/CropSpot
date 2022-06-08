@@ -3,9 +3,7 @@ package com.example.cropspot.di
 import android.content.Context
 import androidx.room.Room
 import com.example.cropspot.common.utils.LocaleUtils
-import com.example.cropspot.data.AppDatabase
-import com.example.cropspot.data.CropRepository
-import com.example.cropspot.data.CropRepositoryImpl
+import com.example.cropspot.data.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,7 +30,13 @@ object ApplicationModule {
     @Provides
     @Singleton
     fun provideCropRepository(db: AppDatabase): CropRepository {
-        return CropRepositoryImpl(cropDao = db.cropDao())
+        return CropRepositoryImpl(db.cropDao())
+    }
+
+    @Provides
+    @Singleton
+    fun provideDiseaseRepository(db: AppDatabase): DiseaseRepository {
+        return DiseaseRepositoryImpl(db.diseaseDao())
     }
 
     @Provides

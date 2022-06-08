@@ -1,12 +1,16 @@
 <resources>
     <string name="app_name">CropSpot</string>
     <string name="ui_text_test_localization">Nebuchadnezzar</string>
-    <string name="ui_text_home">Home</string>
-    <string name="ui_text_account">Account</string>
+    <string name="ui_text_home" translatable="false">Home</string>
+    <string name="ui_text_account" translatable="false">Account</string>
     <string name="ui_text_history">History</string>
     <string name="ui_text_diseases">Diseases</string>
-    <string name="ui_text_guest">Guest</string>
-    <string name="ui_text_settings">Settings</string>
-    <string name="ui_text_help">Help</string>
+    <string name="ui_text_guest" translatable="false">Guest</string>
+    <string name="ui_text_settings" translatable="false">Settings</string>
+    <string name="ui_text_help" translatable="false">Help</string>
     <string name="ui_text_diagnose">Diagnose</string>
+    <string name="ui_text_symptoms">Symptoms</string>
+    <string name="ui_text_cause">Cause</string>
+    <string name="ui_text_treatments">Treatment</string>
+    <string name="ui_text_crops">Crops</string>
 </resources>
