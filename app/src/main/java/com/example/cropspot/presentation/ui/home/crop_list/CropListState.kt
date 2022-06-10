@@ -4,8 +4,8 @@ import com.example.cropspot.data.view.CropItem
 import kotlinx.coroutines.flow.Flow
 
 sealed class CropListState {
-    object LOADING: CropListState()
+    object LOADING : CropListState()
     data class SUCCESS(
-        val groupedList: Flow<Map<Boolean, List<CropItem>>>
-    ): CropListState()
+        val groupedList: Flow<Map<Boolean, List<CropItem>>>,
+    ) : CropListState()
 }

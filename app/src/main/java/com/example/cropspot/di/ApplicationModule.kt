@@ -36,7 +36,10 @@ object ApplicationModule {
     @Provides
     @Singleton
     fun provideDiseaseRepository(db: AppDatabase): DiseaseRepository {
-        return DiseaseRepositoryImpl(db.diseaseDao())
+        return DiseaseRepositoryImpl(
+            db.diseaseDao(),
+            db.diseaseInfoDao(),
+        )
     }
 
     @Provides

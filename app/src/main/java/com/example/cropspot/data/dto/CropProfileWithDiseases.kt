@@ -1,4 +1,4 @@
-package com.example.cropspot.data.view
+package com.example.cropspot.data.dto
 
 import androidx.room.Embedded
 import androidx.room.Relation

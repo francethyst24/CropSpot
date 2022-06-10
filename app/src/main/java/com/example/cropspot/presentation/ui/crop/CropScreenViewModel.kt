@@ -7,6 +7,7 @@ import com.example.cropspot.data.CropRepository
 import com.example.cropspot.presentation.ui.Destination
 import com.example.cropspot.presentation.ui.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -27,12 +28,12 @@ class CropScreenViewModel @Inject constructor(
 
     init {
         val id = savedStateHandle.get<String>("cropId")!!
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             language.collect { language ->
                 val profile = repository.getCropProfile(id, language)
                 _screenState.emit(CropScreenState.SUCCESS(profile))
                 profile.collect { profileWith ->
-                    val names = profileWith.diseases.map { it.disease }
+                    val names = profileWith.diseases.map { it.diseaseId }
                     _cropDiseases.emit(names)
                 }
             }

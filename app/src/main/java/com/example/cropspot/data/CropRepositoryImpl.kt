@@ -1,8 +1,8 @@
 package com.example.cropspot.data
 
 import com.example.cropspot.data.dao.CropDao
+import com.example.cropspot.data.dto.CropProfileWithDiseases
 import com.example.cropspot.data.view.CropItem
-import com.example.cropspot.data.view.CropProfileWithDiseases
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 
@@ -18,6 +18,10 @@ class CropRepositoryImpl constructor(
 
     override fun getCropProfile(id: String, language: String): Flow<CropProfileWithDiseases> {
         return cropDao.getCropProfile(id, language)
+    }
+
+    override fun getCropLocalized(id: String, language: String): String {
+        return cropDao.getCropLocalized(id, language)
     }
 
 }

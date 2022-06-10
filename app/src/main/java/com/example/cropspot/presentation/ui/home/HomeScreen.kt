@@ -1,15 +1,11 @@
 package com.example.cropspot.presentation.ui.home
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.cropspot.common.utils.LoadingBox
 import com.example.cropspot.presentation.ui.UiEvent
 import com.example.cropspot.presentation.ui.home.crop_list.CropList
 import com.example.cropspot.presentation.ui.home.crop_list.CropListState
@@ -33,12 +29,7 @@ fun HomeScreen(
     model.loadLocalizedList()
     val screenState by model.screenState.collectAsState()
     when (val state = screenState) {
-        CropListState.LOADING -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) { CircularProgressIndicator() }
-        }
+        CropListState.LOADING -> LoadingBox()
         is CropListState.SUCCESS -> {
             val groupedListState by state.groupedList.collectAsState(
                 initial = emptyMap()

@@ -1,6 +1,5 @@
 package com.example.cropspot.presentation.ui
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -62,6 +61,7 @@ fun Navigation(
             ),
         ) {
             DiseaseScreen(
+                onNavigate = { navController.navigate(it.route) },
                 onDiseaseCollect = {
                     model.setAppBar(it, Destination.DISEASE.canPopBackStack)
                 },

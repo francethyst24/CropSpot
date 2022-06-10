@@ -2,30 +2,21 @@ package com.example.cropspot.presentation.ui.crop
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.cropspot.common.utils.LoadingBox
 import com.example.cropspot.R
 import com.example.cropspot.common.utils.ContentText
-import com.example.cropspot.common.utils.SubtitleText
-import com.example.cropspot.common.utils.TitleText
-import com.example.cropspot.data.view.CropProfileWithDiseases
+import com.example.cropspot.common.utils.LoadingBox
+import com.example.cropspot.common.utils.ProfileTitle
+import com.example.cropspot.common.utils.TextWithLinks
+import com.example.cropspot.data.dto.CropProfileWithDiseases
 import com.example.cropspot.presentation.ui.UiEvent
 import kotlinx.coroutines.flow.collect
 
@@ -47,7 +38,7 @@ fun CropScreen(
     }
 
     val cropScreenState by model.screenState.collectAsState()
-    val cropDiseasesState by model.cropDiseases.collectAsState()
+    val cropDiseases by model.cropDiseases.collectAsState()
     when (val screenState = cropScreenState) {
         CropScreenState.LOADING -> LoadingBox()
         is CropScreenState.SUCCESS -> {
@@ -56,7 +47,7 @@ fun CropScreen(
                 onCropCollect(crop.profile.name)
                 CropProfileScreen(
                     crop = crop,
-                    diseases = cropDiseasesState,
+                    diseases = cropDiseases,
                     onItemClick = { id ->
                         model.onEvent(CropScreenEvent.OnDiseaseClick(id))
                     }
@@ -80,21 +71,11 @@ fun CropProfileScreen(
             .verticalScroll(scrollState),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Column {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
-            ) {
-                TitleText(text = crop.profile.name)
-                if (!crop.profile.isSupported) return@Row
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_verified),
-                    contentDescription = "Supported",
-                    tint = MaterialTheme.colors.primary
-                )
-            }
-            SubtitleText(text = crop.profile.scientificName)
-        }
+        ProfileTitle(
+            title = crop.profile.name,
+            subtitle = crop.profile.scientificName,
+            isIconShown = crop.profile.isSupported,
+        )
 
         TextWithLinks(
             fullText = buildString {
@@ -112,44 +93,3 @@ fun CropProfileScreen(
     }
 }
 
-@Composable
-fun TextWithLinks(
-    fullText: String,
-    linkText: List<String>,
-    onClick: (String) -> Unit,
-) {
-    val annotatedString = buildAnnotatedString {
-        withStyle(
-            SpanStyle(
-                color = MaterialTheme.colors.onSurface,
-                fontWeight = FontWeight.Bold,
-            )
-        ) { append(fullText) }
-
-        linkText.forEach { clickableText ->
-            val startIndex = fullText.indexOf(clickableText)
-            val endIndex = startIndex.plus(clickableText.length)
-            addStyle(
-                style = SpanStyle(MaterialTheme.colors.secondaryVariant),
-                start = startIndex,
-                end = endIndex,
-            )
-            addStringAnnotation(
-                tag = "route",
-                annotation = clickableText,
-                start = startIndex,
-                end = endIndex,
-            )
-        }
-    }
-    ClickableText(
-        modifier = Modifier.fillMaxWidth(),
-        text = annotatedString,
-        onClick = { offset ->
-            annotatedString
-                .getStringAnnotations("route", offset, offset)
-                .firstOrNull()?.let { onClick(it.item) }
-        },
-        style = MaterialTheme.typography.body1,
-    )
-}

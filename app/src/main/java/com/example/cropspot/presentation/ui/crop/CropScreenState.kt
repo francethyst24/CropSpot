@@ -1,6 +1,6 @@
 package com.example.cropspot.presentation.ui.crop
 
-import com.example.cropspot.data.view.CropProfileWithDiseases
+import com.example.cropspot.data.dto.CropProfileWithDiseases
 import kotlinx.coroutines.flow.Flow
 
 sealed class CropScreenState {

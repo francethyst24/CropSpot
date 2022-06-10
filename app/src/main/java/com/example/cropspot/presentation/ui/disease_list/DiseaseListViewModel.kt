@@ -5,11 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.cropspot.data.DiseaseRepository
 import com.example.cropspot.presentation.ui.Destination
 import com.example.cropspot.presentation.ui.UiEvent
-import com.example.cropspot.presentation.ui.home.CropListEvent
-import com.example.cropspot.presentation.ui.home.crop_list.CropListState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,7 +23,7 @@ class DiseaseListViewModel @Inject constructor(
     val screenState = _screenState.asStateFlow()
 
     fun loadLocalizedList() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val groupedList = repository.getDiseaseItems()
             _screenState.emit(DiseaseListState.SUCCESS(groupedList))
         }
